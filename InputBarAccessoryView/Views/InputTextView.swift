@@ -245,11 +245,6 @@ open class InputTextView: UITextView {
         if isImagePasteEnabled {
             pasteImageInTextContainer(with: image)
         } else {
-            for plugin in inputBarAccessoryView?.inputPlugins ?? [] {
-                if plugin.handleInput(of: image) {
-                    return
-                }
-            }
         }
     }
     

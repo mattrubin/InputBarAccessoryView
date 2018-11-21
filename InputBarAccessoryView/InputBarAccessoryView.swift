@@ -272,9 +272,6 @@ open class InputBarAccessoryView: UIView {
             rightStackViewLayoutSet?.width?.constant = rightStackViewWidthConstant
         }
     }
-    
-    /// Holds the InputPlugin plugins that can be used to extend the functionality of the InputBarAccessoryView
-    open var inputPlugins = [InputPlugin]()
 
     /// The InputBarItems held in the leftStackView
     public private(set) var leftStackViewItems: [InputItem] = []
@@ -823,19 +820,7 @@ open class InputBarAccessoryView: UIView {
     open func inputTextViewDidEndEditing() {
         items.forEach { $0.keyboardEditingEndsAction() }
     }
-    
-    // MARK: - Plugins
-    
-    /// Reloads each of the plugins
-    open func reloadPlugins() {
-        inputPlugins.forEach { $0.reloadData() }
-    }
-    
-    /// Invalidates each of the plugins
-    open func invalidatePlugins() {
-        inputPlugins.forEach { $0.invalidate() }
-    }
-    
+        
     // MARK: - User Actions
     
     /// Calls each items `keyboardSwipeGestureAction` method
