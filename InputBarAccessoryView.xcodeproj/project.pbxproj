@@ -9,11 +9,8 @@
 /* Begin PBXBuildFile section */
 		381042231F85FD1300B1E61A /* SeparatorLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381042221F85FD1300B1E61A /* SeparatorLine.swift */; };
 		381042251F87F34900B1E61A /* InputStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381042241F87F34900B1E61A /* InputStackView.swift */; };
-		3821ADE820F54B3700DE0D1D /* NSMutableAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3821ADE720F54B3700DE0D1D /* NSMutableAttributedString+Extensions.swift */; };
 		38570138218651C400589A30 /* InputBarSendButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38570137218651C400589A30 /* InputBarSendButton.swift */; };
 		3891276D1F980F0300702C05 /* InputItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3891276C1F980F0300702C05 /* InputItem.swift */; };
-		3892AEA4202E427F006AF939 /* UITextView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3892AEA3202E427F006AF939 /* UITextView+Extensions.swift */; };
-		38C501242148C76900246686 /* NSNotification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C501232148C76900246686 /* NSNotification+Extensions.swift */; };
 		38C8677D1F50A6AD00811974 /* NSConstraintLayoutSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C867721F50A6AD00811974 /* NSConstraintLayoutSet.swift */; };
 		38C8677E1F50A6AD00811974 /* UIView+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C867731F50A6AD00811974 /* UIView+AutoLayout.swift */; };
 		38C8677F1F50A6AD00811974 /* InputBarAccessoryViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C867751F50A6AD00811974 /* InputBarAccessoryViewDelegate.swift */; };
@@ -22,19 +19,15 @@
 		38C867831F50A6AD00811974 /* InputBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C8677B1F50A6AD00811974 /* InputBarButtonItem.swift */; };
 		38C867841F50A6AD00811974 /* InputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C8677C1F50A6AD00811974 /* InputTextView.swift */; };
 		38E0565D2193A5A400EC04FA /* HorizontalEdgeInsets.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E0565C2193A5A400EC04FA /* HorizontalEdgeInsets.swift.swift */; };
-		38EA6D66202E58BF00E329BE /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38EA6D65202E58BF00E329BE /* String+Extensions.swift */; };
 		38ECDBBD219B46D50076E154 /* InputBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38ECDBBC219B46D50076E154 /* InputBarViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		381042221F85FD1300B1E61A /* SeparatorLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeparatorLine.swift; sourceTree = "<group>"; };
 		381042241F87F34900B1E61A /* InputStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputStackView.swift; sourceTree = "<group>"; };
-		3821ADE720F54B3700DE0D1D /* NSMutableAttributedString+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 		383B83831F4787E200027965 /* InputBarAccessoryView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = InputBarAccessoryView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		38570137218651C400589A30 /* InputBarSendButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBarSendButton.swift; sourceTree = "<group>"; };
 		3891276C1F980F0300702C05 /* InputItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputItem.swift; sourceTree = "<group>"; };
-		3892AEA3202E427F006AF939 /* UITextView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Extensions.swift"; sourceTree = "<group>"; };
-		38C501232148C76900246686 /* NSNotification+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotification+Extensions.swift"; sourceTree = "<group>"; };
 		38C867721F50A6AD00811974 /* NSConstraintLayoutSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSConstraintLayoutSet.swift; sourceTree = "<group>"; };
 		38C867731F50A6AD00811974 /* UIView+AutoLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayout.swift"; sourceTree = "<group>"; };
 		38C867751F50A6AD00811974 /* InputBarAccessoryViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputBarAccessoryViewDelegate.swift; sourceTree = "<group>"; };
@@ -44,7 +37,6 @@
 		38C8677B1F50A6AD00811974 /* InputBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputBarButtonItem.swift; sourceTree = "<group>"; };
 		38C8677C1F50A6AD00811974 /* InputTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTextView.swift; sourceTree = "<group>"; };
 		38E0565C2193A5A400EC04FA /* HorizontalEdgeInsets.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalEdgeInsets.swift.swift; sourceTree = "<group>"; };
-		38EA6D65202E58BF00E329BE /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		38ECDBBC219B46D50076E154 /* InputBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBarViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -93,10 +85,6 @@
 		38C867711F50A6AD00811974 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				3821ADE720F54B3700DE0D1D /* NSMutableAttributedString+Extensions.swift */,
-				38C501232148C76900246686 /* NSNotification+Extensions.swift */,
-				3892AEA3202E427F006AF939 /* UITextView+Extensions.swift */,
-				38EA6D65202E58BF00E329BE /* String+Extensions.swift */,
 				38C867731F50A6AD00811974 /* UIView+AutoLayout.swift */,
 			);
 			path = Extensions;
@@ -240,19 +228,15 @@
 				38ECDBBD219B46D50076E154 /* InputBarViewController.swift in Sources */,
 				38E0565D2193A5A400EC04FA /* HorizontalEdgeInsets.swift.swift in Sources */,
 				38C867841F50A6AD00811974 /* InputTextView.swift in Sources */,
-				38EA6D66202E58BF00E329BE /* String+Extensions.swift in Sources */,
-				3892AEA4202E427F006AF939 /* UITextView+Extensions.swift in Sources */,
 				3891276D1F980F0300702C05 /* InputItem.swift in Sources */,
 				38C8677D1F50A6AD00811974 /* NSConstraintLayoutSet.swift in Sources */,
 				38C8677F1F50A6AD00811974 /* InputBarAccessoryViewDelegate.swift in Sources */,
-				3821ADE820F54B3700DE0D1D /* NSMutableAttributedString+Extensions.swift in Sources */,
 				38C867821F50A6AD00811974 /* InputBarAccessoryView.swift in Sources */,
 				38570138218651C400589A30 /* InputBarSendButton.swift in Sources */,
 				381042251F87F34900B1E61A /* InputStackView.swift in Sources */,
 				38C8677E1F50A6AD00811974 /* UIView+AutoLayout.swift in Sources */,
 				381042231F85FD1300B1E61A /* SeparatorLine.swift in Sources */,
 				38C867831F50A6AD00811974 /* InputBarButtonItem.swift in Sources */,
-				38C501242148C76900246686 /* NSNotification+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
