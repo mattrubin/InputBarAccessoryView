@@ -28,26 +28,7 @@
 import UIKit
 
 internal extension NSNotification {
-    
-    var event: KeyboardEvent {
-        switch self.name {
-        case UIResponder.keyboardWillShowNotification:
-            return .willShow
-        case UIResponder.keyboardDidShowNotification:
-            return .didShow
-        case UIResponder.keyboardWillHideNotification:
-            return .willHide
-        case UIResponder.keyboardDidHideNotification:
-            return .didHide
-        case UIResponder.keyboardWillChangeFrameNotification:
-            return .willChangeFrame
-        case UIResponder.keyboardDidChangeFrameNotification:
-            return .didChangeFrame
-        default:
-            return .unknown
-        }
-    }
-    
+        
     var timeInterval: TimeInterval? {
         guard let value = userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else { return nil }
         return TimeInterval(truncating: value)
