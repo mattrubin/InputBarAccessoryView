@@ -155,16 +155,16 @@ public class InputBarAccessoryView: UIView {
     }
 
     private func calculateIntrinsicContentSize() -> CGSize {
-        var inputTextViewHeight = preferredTextViewHeight()
-        if inputTextViewHeight >= maxTextViewHeight {
+        var textViewHeight = preferredTextViewHeight()
+        if textViewHeight >= maxTextViewHeight {
+            textViewHeight = maxTextViewHeight
             textView.isScrollEnabled = true
-            inputTextViewHeight = maxTextViewHeight
         } else {
             textView.isScrollEnabled = false
         }
         
         // Calculate the required height
-        let requiredHeight = padding.top + inputTextViewHeight + padding.bottom
+        let requiredHeight = padding.top + textViewHeight + padding.bottom
         return CGSize(width: UIView.noIntrinsicMetric, height: requiredHeight)
     }
 
