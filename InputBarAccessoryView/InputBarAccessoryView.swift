@@ -87,16 +87,30 @@ public class InputBarAccessoryView: UIView {
 
     // MARK: - Setup
     
-    /// Sets up the default properties
     private func setup() {
         backgroundColor = .white
         autoresizingMask = [.flexibleHeight]
+
         setupSubviews()
         setupConstraints()
         setupObservers()
     }
+
+    private func setupSubviews() {
+        addSubview(textView)
+    }
     
-    /// Adds the required notification observers
+    private func setupConstraints() {
+        translatesAutoresizingMaskIntoConstraints = false
+
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        addConstraints(textViewLayoutConstraints)
+        
+        // Constraints Within the contentView
+        maxTextViewHeight = calculateMaxTextViewHeight()
+        addConstraint(textViewHeightConstraint)
+    }
+
     private func setupObservers() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(InputBarAccessoryView.orientationDidChange),
@@ -104,21 +118,6 @@ public class InputBarAccessoryView: UIView {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(InputBarAccessoryView.textDidChange),
                                                name: UITextView.textDidChangeNotification, object: textView)
-    }
-    
-    /// Adds all of the subviews
-    private func setupSubviews() {
-        addSubview(textView)
-    }
-    
-    /// Sets up the initial constraints of each subview
-    private func setupConstraints() {
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        addConstraints(textViewLayoutConstraints)
-        
-        // Constraints Within the contentView
-        maxTextViewHeight = calculateMaxTextViewHeight()
-        addConstraint(textViewHeightConstraint)
     }
 
     // MARK: - Override
