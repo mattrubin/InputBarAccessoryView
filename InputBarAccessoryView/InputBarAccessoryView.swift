@@ -99,7 +99,7 @@ public class InputBarAccessoryView: UIView {
     // MARK: - Setup
     
     private func setup() {
-        backgroundColor = .white
+        backgroundColor = UIColor(named: "BackgroundColor")
         autoresizingMask = [.flexibleHeight]
 
         setupSubviews()
@@ -107,8 +107,6 @@ public class InputBarAccessoryView: UIView {
     }
 
     private func setupSubviews() {
-        translatesAutoresizingMaskIntoConstraints = false
-
         addSubview(separator)
         separator.translatesAutoresizingMaskIntoConstraints = false
         addConstraints(separatorLayoutConstraints)
