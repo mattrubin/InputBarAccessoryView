@@ -65,14 +65,14 @@ open class InputBarAccessoryView: UIView {
     /// To control the height yourself, make sure to set `shouldAutoUpdateMaxTextViewHeight` to false.
     open var maxTextViewHeight: CGFloat = 0 {
         didSet {
-            textViewHeightAnchor?.constant = maxTextViewHeight
+            textViewHeightConstraint?.constant = maxTextViewHeight
         }
     }
 
     // MARK: - Auto-Layout Constraint Sets
     
-    private var textViewLayoutSet: [NSLayoutConstraint] = []
-    private var textViewHeightAnchor: NSLayoutConstraint?
+    private var textViewLayoutConstraints: [NSLayoutConstraint] = []
+    private var textViewHeightConstraint: NSLayoutConstraint?
 
     // MARK: - Initialization
     
@@ -126,17 +126,17 @@ open class InputBarAccessoryView: UIView {
         // The constraints within the InputBarAccessoryView
         translatesAutoresizingMaskIntoConstraints = false
 
-        textViewLayoutSet = [
+        textViewLayoutConstraints = [
             inputTextView.topAnchor.constraint(equalTo: topAnchor, constant: padding.top),
             inputTextView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding.bottom),
             inputTextView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: padding.left),
             inputTextView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -padding.right)
         ]
-        addConstraints(textViewLayoutSet)
+        addConstraints(textViewLayoutConstraints)
         
         // Constraints Within the contentView
         maxTextViewHeight = calculateMaxTextViewHeight()
-        textViewHeightAnchor = inputTextView.heightAnchor.constraint(equalToConstant: maxTextViewHeight)
+        textViewHeightConstraint = inputTextView.heightAnchor.constraint(equalToConstant: maxTextViewHeight)
     }
 
     // MARK: - Constraint Layout Updates
@@ -145,9 +145,9 @@ open class InputBarAccessoryView: UIView {
         super.willMove(toSuperview: newSuperview)
 
         if newSuperview == nil {
-            NSLayoutConstraint.deactivate(textViewLayoutSet)
+            NSLayoutConstraint.deactivate(textViewLayoutConstraints)
         } else {
-            NSLayoutConstraint.activate(textViewLayoutSet)
+            NSLayoutConstraint.activate(textViewLayoutConstraints)
         }
     }
 
@@ -175,14 +175,14 @@ open class InputBarAccessoryView: UIView {
         var inputTextViewHeight = preferredTextViewHeight()
         if inputTextViewHeight >= maxTextViewHeight {
             if !isOverMaxTextViewHeight {
-                textViewHeightAnchor?.isActive = true
+                textViewHeightConstraint?.isActive = true
                 inputTextView.isScrollEnabled = true
                 isOverMaxTextViewHeight = true
             }
             inputTextViewHeight = maxTextViewHeight
         } else {
             if isOverMaxTextViewHeight {
-                textViewHeightAnchor?.isActive = false
+                textViewHeightConstraint?.isActive = false
                 inputTextView.isScrollEnabled = false
                 isOverMaxTextViewHeight = false
                 inputTextView.invalidateIntrinsicContentSize()
