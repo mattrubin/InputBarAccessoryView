@@ -148,7 +148,6 @@ open class InputBarAccessoryView: UIView {
         setupSubviews()
         setupConstraints()
         setupObservers()
-        setupGestureRecognizers()
     }
     
     /// Adds the required notification observers
@@ -159,23 +158,6 @@ open class InputBarAccessoryView: UIView {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(InputBarAccessoryView.inputTextViewDidChange),
                                                name: UITextView.textDidChangeNotification, object: inputTextView)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(InputBarAccessoryView.inputTextViewDidBeginEditing),
-                                               name: UITextView.textDidBeginEditingNotification, object: inputTextView)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(InputBarAccessoryView.inputTextViewDidEndEditing),
-                                               name: UITextView.textDidEndEditingNotification, object: inputTextView)
-    }
-    
-    /// Adds a UISwipeGestureRecognizer for each direction to the InputTextView
-    private func setupGestureRecognizers() {
-        let directions: [UISwipeGestureRecognizer.Direction] = [.left, .right]
-        for direction in directions {
-            let gesture = UISwipeGestureRecognizer(target: self,
-                                                   action: #selector(InputBarAccessoryView.didSwipeTextView(_:)))
-            gesture.direction = direction
-            inputTextView.addGestureRecognizer(gesture)
-        }
     }
     
     /// Adds all of the subviews
@@ -342,31 +324,5 @@ open class InputBarAccessoryView: UIView {
             // Prevent un-needed content size invalidation
             invalidateIntrinsicContentSize()
         }
-    }
-    
-    /// Calls each items `keyboardEditingBeginsAction` method
-    @objc
-    open func inputTextViewDidBeginEditing() {
-    }
-    
-    /// Calls each items `keyboardEditingEndsAction` method
-    @objc
-    open func inputTextViewDidEndEditing() {
-    }
-        
-    // MARK: - User Actions
-    
-    /// Calls each items `keyboardSwipeGestureAction` method
-    /// Calls the delegates `didSwipeTextViewWith` method
-    @objc
-    open func didSwipeTextView(_ gesture: UISwipeGestureRecognizer) {
-        delegate?.inputBar(self, didSwipeTextViewWith: gesture)
-    }
-    
-    /// Calls the delegates `didPressSendButtonWith` method
-    /// Assumes that the InputTextView's text has been set to empty and calls `inputTextViewDidChange()`
-    /// Invalidates each of the InputPlugins
-    open func didSelectSendButton() {
-        delegate?.inputBar(self, didPressSendButtonWith: inputTextView.text)
     }
 }
