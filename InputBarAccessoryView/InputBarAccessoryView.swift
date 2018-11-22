@@ -108,7 +108,6 @@ open class InputBarAccessoryView: UIView {
     
     private var textViewLayoutSet: [NSLayoutConstraint] = []
     private var textViewHeightAnchor: NSLayoutConstraint?
-    private var windowAnchor: NSLayoutConstraint?
 
     // MARK: - Initialization
     
@@ -137,11 +136,6 @@ open class InputBarAccessoryView: UIView {
             return
         }
         activateConstraints()
-    }
-
-    open override func didMoveToWindow() {
-        super.didMoveToWindow()
-        setupConstraints(to: window)
     }
     
     // MARK: - Setup
@@ -207,22 +201,7 @@ open class InputBarAccessoryView: UIView {
         maxTextViewHeight = calculateMaxTextViewHeight()
         textViewHeightAnchor = inputTextView.heightAnchor.constraint(equalToConstant: maxTextViewHeight)
     }
-    
-    /// Respect window safeAreaInsets
-    /// Adds a constraint to anchor the bottomAnchor of the contentView to the window's safeAreaLayoutGuide.bottomAnchor
-    ///
-    /// - Parameter window: The window to anchor to
-    private func setupConstraints(to window: UIWindow?) {
-        if let window = window {
-            guard window.safeAreaInsets.bottom > 0 else { return }
-            windowAnchor?.isActive = false
-            windowAnchor = inputTextView.bottomAnchor.constraint(lessThanOrEqualToSystemSpacingBelow: window.safeAreaLayoutGuide.bottomAnchor, multiplier: 1)
-            windowAnchor?.constant = -padding.bottom
-            windowAnchor?.priority = UILayoutPriority(rawValue: 750)
-            windowAnchor?.isActive = true
-        }
-    }
-    
+
     // MARK: - Constraint Layout Updates
 
     /// Invalidates the view’s intrinsic content size
