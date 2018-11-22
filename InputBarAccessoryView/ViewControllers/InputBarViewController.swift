@@ -71,7 +71,7 @@ open class InputBarViewController: UIViewController, InputBarAccessoryViewDelega
 
     @discardableResult
     open override func resignFirstResponder() -> Bool {
-        inputBar.inputTextView.resignFirstResponder()
+        inputBar.textView.resignFirstResponder()
         return super.resignFirstResponder()
     }
 

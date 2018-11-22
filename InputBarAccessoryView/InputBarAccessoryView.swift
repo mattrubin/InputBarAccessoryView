@@ -33,18 +33,18 @@ open class InputBarAccessoryView: UIView {
     weak var delegate: InputBarAccessoryViewDelegate?
 
     /// The InputTextView a user can input a message in
-    private(set) lazy var inputTextView: UITextView = { [weak self] in
-        let inputTextView = UITextView()
-        inputTextView.backgroundColor = .clear
-        inputTextView.font = UIFont.preferredFont(forTextStyle: .body)
-        inputTextView.isScrollEnabled = false
-        inputTextView.scrollIndicatorInsets = UIEdgeInsets(top: .leastNonzeroMagnitude,
+    private(set) lazy var textView: UITextView = { [weak self] in
+        let textView = UITextView()
+        textView.backgroundColor = .clear
+        textView.font = UIFont.preferredFont(forTextStyle: .body)
+        textView.isScrollEnabled = false
+        textView.scrollIndicatorInsets = UIEdgeInsets(top: .leastNonzeroMagnitude,
                                                            left: .leastNonzeroMagnitude,
                                                            bottom: .leastNonzeroMagnitude,
                                                            right: .leastNonzeroMagnitude)
-        inputTextView.layer.borderWidth = 1
-        inputTextView.translatesAutoresizingMaskIntoConstraints = false
-        return inputTextView
+        textView.layer.borderWidth = 1
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        return textView
     }()
 
     private let padding: UIEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
@@ -70,12 +70,12 @@ open class InputBarAccessoryView: UIView {
     }
 
     private lazy var textViewLayoutConstraints = [
-        inputTextView.topAnchor.constraint(equalTo: topAnchor, constant: padding.top),
-        inputTextView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding.bottom),
-        inputTextView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: padding.left),
-        inputTextView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -padding.right)
+        textView.topAnchor.constraint(equalTo: topAnchor, constant: padding.top),
+        textView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding.bottom),
+        textView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: padding.left),
+        textView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -padding.right)
     ]
-    private lazy var textViewHeightConstraint = inputTextView.heightAnchor.constraint(equalToConstant: maxTextViewHeight)
+    private lazy var textViewHeightConstraint = textView.heightAnchor.constraint(equalToConstant: maxTextViewHeight)
 
     // MARK: - Initialization
     
@@ -115,12 +115,12 @@ open class InputBarAccessoryView: UIView {
                                                name: UIDevice.orientationDidChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(InputBarAccessoryView.textDidChange),
-                                               name: UITextView.textDidChangeNotification, object: inputTextView)
+                                               name: UITextView.textDidChangeNotification, object: textView)
     }
     
     /// Adds all of the subviews
     private func setupSubviews() {
-        addSubview(inputTextView)
+        addSubview(textView)
     }
     
     /// Sets up the initial constraints of each subview
@@ -160,8 +160,8 @@ open class InputBarAccessoryView: UIView {
 
     /// The height that will fit the current text in the InputTextView based on its current bounds
     private func preferredTextViewHeight() -> CGFloat {
-        let maxTextViewSize = CGSize(width: inputTextView.bounds.width, height: .greatestFiniteMagnitude)
-        return inputTextView.sizeThatFits(maxTextViewSize).height.rounded(.down)
+        let maxTextViewSize = CGSize(width: textView.bounds.width, height: .greatestFiniteMagnitude)
+        return textView.sizeThatFits(maxTextViewSize).height.rounded(.down)
     }
 
     /// Calculates the correct intrinsicContentSize of the InputBarAccessoryView
@@ -172,16 +172,16 @@ open class InputBarAccessoryView: UIView {
         if inputTextViewHeight >= maxTextViewHeight {
             if !isOverMaxTextViewHeight {
                 textViewHeightConstraint.isActive = true
-                inputTextView.isScrollEnabled = true
+                textView.isScrollEnabled = true
                 isOverMaxTextViewHeight = true
             }
             inputTextViewHeight = maxTextViewHeight
         } else {
             if isOverMaxTextViewHeight {
                 textViewHeightConstraint.isActive = false
-                inputTextView.isScrollEnabled = false
+                textView.isScrollEnabled = false
                 isOverMaxTextViewHeight = false
-                inputTextView.invalidateIntrinsicContentSize()
+                textView.invalidateIntrinsicContentSize()
             }
         }
         
@@ -192,7 +192,7 @@ open class InputBarAccessoryView: UIView {
 
     open override func layoutIfNeeded() {
         super.layoutIfNeeded()
-        inputTextView.layoutIfNeeded()
+        textView.layoutIfNeeded()
     }
 
     /// Returns the max height the InputTextView can grow to based on the UIScreen
@@ -234,12 +234,12 @@ open class InputBarAccessoryView: UIView {
     /// Calls the delegates `textViewTextDidChangeTo` method
     @objc
     private func textDidChange() {
-        let trimmedText = inputTextView.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedText = textView.text.trimmingCharacters(in: .whitespacesAndNewlines)
         
         // FIXME: sendButton.isEnabled = !trimmedText.isEmpty
 
         // Prevent un-needed content size invalidation
-        let shouldInvalidateIntrinsicContentSize = preferredTextViewHeight() != inputTextView.bounds.height
+        let shouldInvalidateIntrinsicContentSize = preferredTextViewHeight() != textView.bounds.height
         if shouldInvalidateIntrinsicContentSize {
             invalidateIntrinsicContentSize()
         }
