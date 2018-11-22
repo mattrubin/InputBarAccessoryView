@@ -28,22 +28,27 @@
 import UIKit
 
 public class InputBarAccessoryView: UIView {
-    private(set) lazy var textView: UITextView = { [weak self] in
-        let textView = UITextView()
-        textView.backgroundColor = .clear
+    public let textView = UITextView().configure { textView in
         textView.font = UIFont.preferredFont(forTextStyle: .body)
+        textView.backgroundColor = .white
+        textView.layer.cornerRadius = 4
+        textView.layer.borderWidth = 1 / UIScreen.main.scale
+        textView.layer.borderColor = UIColor(named: "DividerColor")?.cgColor
+        textView.textContainerInset = UIEdgeInsets(top: 6, left: 4, bottom: 4, right: 4)
         textView.scrollIndicatorInsets = UIEdgeInsets(top: .leastNonzeroMagnitude,
                                                       left: .leastNonzeroMagnitude,
                                                       bottom: .leastNonzeroMagnitude,
                                                       right: .leastNonzeroMagnitude)
-        textView.layer.borderWidth = 1
         textView.isScrollEnabled = false
-        return textView
-    }()
+    }
+
+    let separator = UIView().configure {
+        $0.backgroundColor = UIColor(named: "DividerColor")
+    }
 
     // Cached Layout Metrics
 
-    private let padding: UIEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
+    private let padding: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
 
     private var cachedIntrinsicContentSize: CGSize?
 
@@ -56,12 +61,20 @@ public class InputBarAccessoryView: UIView {
     // Layout Constraints
 
     private lazy var textViewLayoutConstraints = [
-        textView.topAnchor.constraint(equalTo: topAnchor, constant: padding.top),
+        textView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: padding.top),
         textView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding.bottom),
-        textView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: padding.left),
-        textView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -padding.right)
+        textView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: padding.left),
+        textView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -padding.right)
     ]
+
     private lazy var textViewHeightConstraint = textView.heightAnchor.constraint(lessThanOrEqualToConstant: maxTextViewHeight)
+
+    private lazy var separatorLayoutConstraints = [
+        separator.topAnchor.constraint(equalTo: topAnchor),
+        separator.leadingAnchor.constraint(equalTo: leadingAnchor),
+        separator.trailingAnchor.constraint(equalTo: trailingAnchor),
+        separator.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale),
+    ]
 
     // MARK: - Initialization
     
@@ -90,20 +103,20 @@ public class InputBarAccessoryView: UIView {
         autoresizingMask = [.flexibleHeight]
 
         setupSubviews()
-        setupConstraints()
         setupObservers()
     }
 
     private func setupSubviews() {
-        addSubview(textView)
-    }
-    
-    private func setupConstraints() {
         translatesAutoresizingMaskIntoConstraints = false
 
+        addSubview(separator)
+        separator.translatesAutoresizingMaskIntoConstraints = false
+        addConstraints(separatorLayoutConstraints)
+
+        addSubview(textView)
         textView.translatesAutoresizingMaskIntoConstraints = false
         addConstraints(textViewLayoutConstraints)
-        
+
         // Constraints Within the contentView
         maxTextViewHeight = calculateMaxTextViewHeight()
         addConstraint(textViewHeightConstraint)
@@ -201,5 +214,12 @@ public class InputBarAccessoryView: UIView {
         if shouldInvalidateIntrinsicContentSize {
             invalidateIntrinsicContentSize()
         }
+    }
+}
+
+private extension NSObjectProtocol {
+    func configure(with body: (Self) -> Void) -> Self {
+        body(self)
+        return self
     }
 }
