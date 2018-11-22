@@ -46,8 +46,7 @@ public class InputBarAccessoryView: UIView {
 
     private let padding: UIEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
 
-    /// The most recent calculation of the intrinsicContentSize
-    private lazy var cachedIntrinsicContentSize: CGSize = calculateIntrinsicContentSize()
+    private var cachedIntrinsicContentSize: CGSize?
 
     private var maxTextViewHeight: CGFloat = 0 {
         didSet {
@@ -139,22 +138,10 @@ public class InputBarAccessoryView: UIView {
     }
 
     override public var intrinsicContentSize: CGSize {
-        return cachedIntrinsicContentSize
-    }
+        if let intrinsicContentSize = cachedIntrinsicContentSize {
+            return intrinsicContentSize
+        }
 
-    override public func invalidateIntrinsicContentSize() {
-        super.invalidateIntrinsicContentSize()
-        cachedIntrinsicContentSize = calculateIntrinsicContentSize()
-    }
-
-    // MARK: - Size Calculation
-
-    private func preferredTextViewHeight() -> CGFloat {
-        let maxTextViewSize = CGSize(width: textView.bounds.width, height: .greatestFiniteMagnitude)
-        return textView.sizeThatFits(maxTextViewSize).height.rounded(.down)
-    }
-
-    private func calculateIntrinsicContentSize() -> CGSize {
         var textViewHeight = preferredTextViewHeight()
         if textViewHeight >= maxTextViewHeight {
             textViewHeight = maxTextViewHeight
@@ -162,10 +149,24 @@ public class InputBarAccessoryView: UIView {
         } else {
             textView.isScrollEnabled = false
         }
-        
-        // Calculate the required height
-        let requiredHeight = padding.top + textViewHeight + padding.bottom
-        return CGSize(width: UIView.noIntrinsicMetric, height: requiredHeight)
+
+        let preferredHeight = padding.top + textViewHeight + padding.bottom
+        let intrinsicContentSize = CGSize(width: UIView.noIntrinsicMetric, height: preferredHeight)
+
+        cachedIntrinsicContentSize = intrinsicContentSize
+        return intrinsicContentSize
+    }
+
+    override public func invalidateIntrinsicContentSize() {
+        super.invalidateIntrinsicContentSize()
+        cachedIntrinsicContentSize = nil
+    }
+
+    // MARK: - Size Calculation
+
+    private func preferredTextViewHeight() -> CGFloat {
+        let maxTextViewSize = CGSize(width: textView.bounds.width, height: .greatestFiniteMagnitude)
+        return textView.sizeThatFits(maxTextViewSize).height.rounded(.down)
     }
 
     private func calculateMaxTextViewHeight() -> CGFloat {
