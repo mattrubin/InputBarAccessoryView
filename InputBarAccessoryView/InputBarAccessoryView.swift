@@ -49,11 +49,6 @@ open class InputBarAccessoryView: UIView {
 
     private let padding: UIEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
 
-    /// Returns the most recent size calculated by `calculateIntrinsicContentSize()`
-    open override var intrinsicContentSize: CGSize {
-        return cachedIntrinsicContentSize
-    }
-    
     /// The most recent calculation of the intrinsicContentSize
     private lazy var cachedIntrinsicContentSize: CGSize = calculateIntrinsicContentSize()
     
@@ -72,12 +67,6 @@ open class InputBarAccessoryView: UIView {
         didSet {
             textViewHeightAnchor?.constant = maxTextViewHeight
         }
-    }
-    
-    /// The height that will fit the current text in the InputTextView based on its current bounds
-    public var requiredInputTextViewHeight: CGFloat {
-        let maxTextViewSize = CGSize(width: inputTextView.bounds.width, height: .greatestFiniteMagnitude)
-        return inputTextView.sizeThatFits(maxTextViewSize).height.rounded(.down)
     }
 
     // MARK: - Auto-Layout Constraint Sets
@@ -162,17 +151,28 @@ open class InputBarAccessoryView: UIView {
         }
     }
 
+    /// Returns the most recent size calculated by `calculateIntrinsicContentSize()`
+    open override var intrinsicContentSize: CGSize {
+        return cachedIntrinsicContentSize
+    }
+
     /// Invalidates the view’s intrinsic content size
     open override func invalidateIntrinsicContentSize() {
         super.invalidateIntrinsicContentSize()
         cachedIntrinsicContentSize = calculateIntrinsicContentSize()
     }
-    
+
+    /// The height that will fit the current text in the InputTextView based on its current bounds
+    private func preferredTextViewHeight() -> CGFloat {
+        let maxTextViewSize = CGSize(width: inputTextView.bounds.width, height: .greatestFiniteMagnitude)
+        return inputTextView.sizeThatFits(maxTextViewSize).height.rounded(.down)
+    }
+
     /// Calculates the correct intrinsicContentSize of the InputBarAccessoryView
     ///
     /// - Returns: The required intrinsicContentSize
     private func calculateIntrinsicContentSize() -> CGSize {
-        var inputTextViewHeight = requiredInputTextViewHeight
+        var inputTextViewHeight = preferredTextViewHeight()
         if inputTextViewHeight >= maxTextViewHeight {
             if !isOverMaxTextViewHeight {
                 textViewHeightAnchor?.isActive = true
@@ -243,7 +243,7 @@ open class InputBarAccessoryView: UIView {
         // FIXME: sendButton.isEnabled = !trimmedText.isEmpty
 
         // Prevent un-needed content size invalidation
-        let shouldInvalidateIntrinsicContentSize = requiredInputTextViewHeight != inputTextView.bounds.height
+        let shouldInvalidateIntrinsicContentSize = preferredTextViewHeight() != inputTextView.bounds.height
         if shouldInvalidateIntrinsicContentSize {
             invalidateIntrinsicContentSize()
         }
