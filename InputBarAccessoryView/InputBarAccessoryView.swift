@@ -48,10 +48,6 @@ public class InputBarAccessoryView: UIView {
 
     /// The most recent calculation of the intrinsicContentSize
     private lazy var cachedIntrinsicContentSize: CGSize = calculateIntrinsicContentSize()
-    
-    /// A boolean that indicates if the maxTextViewHeight has been met. Keeping track of this
-    /// improves the performance
-    private(set) var isOverMaxTextViewHeight = false
 
     private var maxTextViewHeight: CGFloat = 0 {
         didSet {
@@ -161,17 +157,10 @@ public class InputBarAccessoryView: UIView {
     private func calculateIntrinsicContentSize() -> CGSize {
         var inputTextViewHeight = preferredTextViewHeight()
         if inputTextViewHeight >= maxTextViewHeight {
-            if !isOverMaxTextViewHeight {
-                textView.isScrollEnabled = true
-                isOverMaxTextViewHeight = true
-            }
+            textView.isScrollEnabled = true
             inputTextViewHeight = maxTextViewHeight
         } else {
-            if isOverMaxTextViewHeight {
-                textView.isScrollEnabled = false
-                isOverMaxTextViewHeight = false
-                textView.invalidateIntrinsicContentSize()
-            }
+            textView.isScrollEnabled = false
         }
         
         // Calculate the required height
