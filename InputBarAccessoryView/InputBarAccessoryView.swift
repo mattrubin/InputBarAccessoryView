@@ -70,11 +70,6 @@ open class InputBarAccessoryView: UIView {
         return cachedIntrinsicContentSize
     }
     
-    /// The intrinsicContentSize can change a lot so the delegate method
-    /// `inputBar(self, didChangeIntrinsicContentTo: size)` only needs to be called
-    /// when it's different
-    public private(set) var previousIntrinsicContentSize: CGSize?
-    
     /// The most recent calculation of the intrinsicContentSize
     private lazy var cachedIntrinsicContentSize: CGSize = calculateIntrinsicContentSize()
     
@@ -190,10 +185,6 @@ open class InputBarAccessoryView: UIView {
     open override func invalidateIntrinsicContentSize() {
         super.invalidateIntrinsicContentSize()
         cachedIntrinsicContentSize = calculateIntrinsicContentSize()
-        if previousIntrinsicContentSize != cachedIntrinsicContentSize {
-            delegate?.inputBar(self, didChangeIntrinsicContentTo: cachedIntrinsicContentSize)
-            previousIntrinsicContentSize = cachedIntrinsicContentSize
-        }
     }
     
     /// Calculates the correct intrinsicContentSize of the InputBarAccessoryView
