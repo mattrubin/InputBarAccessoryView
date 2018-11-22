@@ -229,16 +229,6 @@ open class InputBarAccessoryView: UIView {
         inputTextView.layoutIfNeeded()
     }
 
-    open override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        guard 0 != 0 || 0 != 0 else {
-            return super.point(inside: point, with: event)
-        }
-        // Allow touches to pass through base view
-        return subviews.contains {
-            !$0.isHidden && $0.point(inside: convert(point, to: $0), with: event)
-        }
-    }
-    
     /// Returns the max height the InputTextView can grow to based on the UIScreen
     ///
     /// - Returns: Max Height
