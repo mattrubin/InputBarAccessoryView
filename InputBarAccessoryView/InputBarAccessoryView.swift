@@ -34,16 +34,7 @@ open class InputBarAccessoryView: UIView {
     
     /// A delegate to broadcast notifications from the `InputBarAccessoryView`
     open weak var delegate: InputBarAccessoryViewDelegate?
-    
-    /// The background UIView anchored to the bottom, left, and right of the InputBarAccessoryView
-    /// with a top anchor equal to the bottom of the top InputStackView
-    open var backgroundView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .white
-        return view
-    }()
-    
+
     /// A content UIView that holds the left/right/bottom InputStackViews and InputTextView. Anchored to the bottom of the
     /// topStackView and inset by the padding UIEdgeInsets
     open var contentView: UIView = {
@@ -51,36 +42,7 @@ open class InputBarAccessoryView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
-    /**
-     A UIVisualEffectView that adds a blur effect to make the view appear transparent.
-     
-     ## Important Notes ##
-     1. The blurView is initially not added to the backgroundView to improve performance when not needed. When `isTranslucent` is set to TRUE for the first time the blurView is added and anchored to the `backgroundView`s edge anchors
-    */
-    open var blurView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: .light)
-        let view = UIVisualEffectView(effect: blurEffect)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    /// Determines if the InputBarAccessoryView should have a translucent effect
-    open var isTranslucent: Bool = false {
-        didSet {
-            if isTranslucent && blurView.superview == nil {
-                backgroundView.addSubview(blurView)
-                blurView.fillSuperview()
-            }
-            blurView.isHidden = !isTranslucent
-            let color: UIColor = backgroundView.backgroundColor ?? .white
-            backgroundView.backgroundColor = isTranslucent ? color.withAlphaComponent(0.75) : color
-        }
-    }
 
-    /// A SeparatorLine that is anchored at the top of the InputBarAccessoryView
-    public let separatorLine = SeparatorLine()
-    
     /**
      The InputStackView at the InputStackView.top position
      
@@ -309,8 +271,7 @@ open class InputBarAccessoryView: UIView {
     private var bottomStackViewLayoutSet: NSLayoutConstraintSet?
     private var contentViewLayoutSet: NSLayoutConstraintSet?
     private var windowAnchor: NSLayoutConstraint?
-    private var backgroundViewLayoutSet: NSLayoutConstraintSet?
-    
+
     // MARK: - Initialization
     
     public convenience init() {
@@ -388,10 +349,8 @@ open class InputBarAccessoryView: UIView {
     /// Adds all of the subviews
     private func setupSubviews() {
         
-        addSubview(backgroundView)
         addSubview(topStackView)
         addSubview(contentView)
-        addSubview(separatorLine)
         contentView.addSubview(inputTextView)
         contentView.addSubview(leftStackView)
         contentView.addSubview(rightStackView)
@@ -403,15 +362,8 @@ open class InputBarAccessoryView: UIView {
     private func setupConstraints() {
         
         // The constraints within the InputBarAccessoryView
-        separatorLine.addConstraints(topAnchor, left: backgroundView.leftAnchor, right: backgroundView.rightAnchor, heightConstant: separatorLine.height)
+        translatesAutoresizingMaskIntoConstraints = false
 
-        backgroundViewLayoutSet = NSLayoutConstraintSet(
-            top: backgroundView.topAnchor.constraint(equalTo: topStackView.bottomAnchor),
-            bottom: backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            left: backgroundView.leftAnchor.constraint(equalTo: leftAnchor, constant: frameInsets.left),
-            right: backgroundView.rightAnchor.constraint(equalTo: rightAnchor, constant: -frameInsets.right)
-        )
-        
         topStackViewLayoutSet = NSLayoutConstraintSet(
             top:    topStackView.topAnchor.constraint(equalTo: topAnchor, constant: topStackViewPadding.top),
             bottom: topStackView.bottomAnchor.constraint(equalTo: contentView.topAnchor, constant: -padding.top),
@@ -481,7 +433,6 @@ open class InputBarAccessoryView: UIView {
                 windowAnchor?.constant = -padding.bottom
                 windowAnchor?.priority = UILayoutPriority(rawValue: 750)
                 windowAnchor?.isActive = true
-                backgroundViewLayoutSet?.bottom?.constant = window.safeAreaInsets.bottom
             }
         }
     }
@@ -489,8 +440,6 @@ open class InputBarAccessoryView: UIView {
     // MARK: - Constraint Layout Updates
 
     private func updateFrameInsets() {
-        backgroundViewLayoutSet?.left?.constant = frameInsets.left
-        backgroundViewLayoutSet?.right?.constant = -frameInsets.right
         updatePadding()
         updateTopStackViewPadding()
     }
@@ -632,7 +581,6 @@ open class InputBarAccessoryView: UIView {
     
     /// Activates the NSLayoutConstraintSet's
     private func activateConstraints() {
-        backgroundViewLayoutSet?.activate()
         contentViewLayoutSet?.activate()
         textViewLayoutSet?.activate()
         leftStackViewLayoutSet?.activate()
@@ -643,8 +591,7 @@ open class InputBarAccessoryView: UIView {
     
     /// Deactivates the NSLayoutConstraintSet's
     private func deactivateConstraints() {
-        backgroundViewLayoutSet?.deactivate()
-        contentViewLayoutSet?.deactivate()
+         contentViewLayoutSet?.deactivate()
         textViewLayoutSet?.deactivate()
         leftStackViewLayoutSet?.deactivate()
         rightStackViewLayoutSet?.deactivate()
