@@ -789,12 +789,7 @@ open class InputBarAccessoryView: UIView {
         let trimmedText = inputTextView.text.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if shouldManageSendButtonEnabledState {
-            var isEnabled = !trimmedText.isEmpty
-            if !isEnabled {
-                // The images property is more resource intensive so only use it if needed
-                isEnabled = inputTextView.images.count > 0
-            }
-            sendButton.isEnabled = isEnabled
+            sendButton.isEnabled = !trimmedText.isEmpty
         }
         
         // Capture change before iterating over the InputItem's
