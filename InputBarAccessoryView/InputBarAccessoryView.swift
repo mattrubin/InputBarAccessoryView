@@ -29,14 +29,11 @@ import UIKit
 
 /// A powerful InputAccessoryView ideal for messaging applications
 open class InputBarAccessoryView: UIView {
-    
-    // MARK: - Properties
-    
     /// A delegate to broadcast notifications from the `InputBarAccessoryView`
-    open weak var delegate: InputBarAccessoryViewDelegate?
+    weak var delegate: InputBarAccessoryViewDelegate?
 
     /// The InputTextView a user can input a message in
-    open lazy var inputTextView: UITextView = { [weak self] in
+    private(set) lazy var inputTextView: UITextView = { [weak self] in
         let inputTextView = UITextView()
         inputTextView.backgroundColor = .clear
         inputTextView.font = UIFont.preferredFont(forTextStyle: .body)
@@ -50,20 +47,7 @@ open class InputBarAccessoryView: UIView {
         return inputTextView
     }()
 
-    /**
-     The anchor contants used by the InputStackView's and InputTextView to create padding
-     within the InputBarAccessoryView
-     
-     ## Important Notes ##
-     
-     ````
-     V:|...[InputStackView.top]-(padding.top)-[contentView]-(padding.bottom)-|
-     
-     H:|-(frameInsets.left)-(padding.left)-[contentView]-(padding.right)-(frameInsets.right)-|
-     ````
-     
-     */
-    let padding: UIEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
+    private let padding: UIEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
 
     /// Returns the most recent size calculated by `calculateIntrinsicContentSize()`
     open override var intrinsicContentSize: CGSize {
@@ -121,21 +105,10 @@ open class InputBarAccessoryView: UIView {
         NotificationCenter.default.removeObserver(self)
     }
 
-    open override func willMove(toSuperview newSuperview: UIView?) {
-        super.willMove(toSuperview: newSuperview)
-
-        if newSuperview == nil {
-            NSLayoutConstraint.deactivate(textViewLayoutSet)
-        } else {
-            NSLayoutConstraint.activate(textViewLayoutSet)
-        }
-    }
-
     // MARK: - Setup
     
     /// Sets up the default properties
     open func setup() {
-
         backgroundColor = .white
         autoresizingMask = [.flexibleHeight]
         setupSubviews()
@@ -179,6 +152,16 @@ open class InputBarAccessoryView: UIView {
 
     // MARK: - Constraint Layout Updates
 
+    open override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
+
+        if newSuperview == nil {
+            NSLayoutConstraint.deactivate(textViewLayoutSet)
+        } else {
+            NSLayoutConstraint.activate(textViewLayoutSet)
+        }
+    }
+
     /// Invalidates the view’s intrinsic content size
     open override func invalidateIntrinsicContentSize() {
         super.invalidateIntrinsicContentSize()
@@ -188,8 +171,7 @@ open class InputBarAccessoryView: UIView {
     /// Calculates the correct intrinsicContentSize of the InputBarAccessoryView
     ///
     /// - Returns: The required intrinsicContentSize
-    open func calculateIntrinsicContentSize() -> CGSize {
-        
+    private func calculateIntrinsicContentSize() -> CGSize {
         var inputTextViewHeight = requiredInputTextViewHeight
         if inputTextViewHeight >= maxTextViewHeight {
             if !isOverMaxTextViewHeight {
@@ -208,8 +190,7 @@ open class InputBarAccessoryView: UIView {
         }
         
         // Calculate the required height
-        let totalPadding = padding.top + padding.bottom
-        let requiredHeight = inputTextViewHeight + totalPadding
+        let requiredHeight = padding.top + inputTextViewHeight + padding.bottom
         return CGSize(width: UIView.noIntrinsicMetric, height: requiredHeight)
     }
 
@@ -221,7 +202,7 @@ open class InputBarAccessoryView: UIView {
     /// Returns the max height the InputTextView can grow to based on the UIScreen
     ///
     /// - Returns: Max Height
-    open func calculateMaxTextViewHeight() -> CGFloat {
+    private func calculateMaxTextViewHeight() -> CGFloat {
         if traitCollection.verticalSizeClass == .regular {
             return (UIScreen.main.bounds.height / 3).rounded(.down)
         }
