@@ -90,9 +90,6 @@ open class InputBarAccessoryView: UIView {
         }
     }
     
-    /// A boolean that determines whether the sendButton's `isEnabled` state should be managed automatically.
-    open var shouldManageSendButtonEnabledState = true
-    
     /// The height that will fit the current text in the InputTextView based on its current bounds
     public var requiredInputTextViewHeight: CGFloat {
         let maxTextViewSize = CGSize(width: inputTextView.bounds.width, height: .greatestFiniteMagnitude)
@@ -151,7 +148,7 @@ open class InputBarAccessoryView: UIView {
                                                selector: #selector(InputBarAccessoryView.orientationDidChange),
                                                name: UIDevice.orientationDidChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(InputBarAccessoryView.inputTextViewDidChange),
+                                               selector: #selector(InputBarAccessoryView.textDidChange),
                                                name: UITextView.textDidChangeNotification, object: inputTextView)
     }
     
@@ -263,9 +260,10 @@ open class InputBarAccessoryView: UIView {
     // MARK: - Notifications/Hooks
     
     /// Invalidates the intrinsicContentSize
-    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass || traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass {
+        if traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass
+            || traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass {
             if shouldAutoUpdateMaxTextViewHeight {
                 maxTextViewHeight = calculateMaxTextViewHeight()
             } else {
@@ -276,7 +274,7 @@ open class InputBarAccessoryView: UIView {
     
     /// Invalidates the intrinsicContentSize
     @objc
-    open func orientationDidChange() {
+    private func orientationDidChange() {
         if shouldAutoUpdateMaxTextViewHeight {
             maxTextViewHeight = calculateMaxTextViewHeight()
         }
@@ -284,26 +282,20 @@ open class InputBarAccessoryView: UIView {
     }
 
     /// Enables/Disables the sendButton based on the InputTextView's text being empty
-    /// Calls each items `textViewDidChangeAction` method
-    /// Calls the delegates `textViewTextDidChangeTo` method
     /// Invalidates the intrinsicContentSize
+    /// Calls the delegates `textViewTextDidChangeTo` method
     @objc
-    open func inputTextViewDidChange() {
-        
+    private func textDidChange() {
         let trimmedText = inputTextView.text.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        if shouldManageSendButtonEnabledState {
-            //sendButton.isEnabled = !trimmedText.isEmpty
-        }
-        
-        // Capture change before iterating over the InputItem's
+        // FIXME: sendButton.isEnabled = !trimmedText.isEmpty
+
+        // Prevent un-needed content size invalidation
         let shouldInvalidateIntrinsicContentSize = requiredInputTextViewHeight != inputTextView.bounds.height
-        
-        delegate?.inputBar(self, textViewTextDidChangeTo: trimmedText)
-        
         if shouldInvalidateIntrinsicContentSize {
-            // Prevent un-needed content size invalidation
             invalidateIntrinsicContentSize()
         }
+
+        delegate?.inputBar(self, textViewTextDidChangeTo: trimmedText)
     }
 }
