@@ -45,6 +45,7 @@ open class InputBarAccessoryView: UIView {
                                                            left: .leastNonzeroMagnitude,
                                                            bottom: .leastNonzeroMagnitude,
                                                            right: .leastNonzeroMagnitude)
+        inputTextView.layer.borderWidth = 1
         inputTextView.translatesAutoresizingMaskIntoConstraints = false
         return inputTextView
     }()
@@ -62,11 +63,7 @@ open class InputBarAccessoryView: UIView {
      ````
      
      */
-    open var padding: UIEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12) {
-        didSet {
-            updatePadding()
-        }
-    }
+    let padding: UIEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
 
     /// Returns the most recent size calculated by `calculateIntrinsicContentSize()`
     open override var intrinsicContentSize: CGSize {
@@ -109,7 +106,7 @@ open class InputBarAccessoryView: UIView {
 
     // MARK: - Auto-Layout Constraint Sets
     
-    private var textViewLayoutSet: NSLayoutConstraintSet?
+    private var textViewLayoutSet: [NSLayoutConstraint] = []
     private var textViewHeightAnchor: NSLayoutConstraint?
     private var windowAnchor: NSLayoutConstraint?
 
@@ -198,19 +195,13 @@ open class InputBarAccessoryView: UIView {
         // The constraints within the InputBarAccessoryView
         translatesAutoresizingMaskIntoConstraints = false
 
-        textViewLayoutSet = NSLayoutConstraintSet(
-            top:    inputTextView.topAnchor.constraint(equalTo: topAnchor, constant: padding.top),
-            bottom: inputTextView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -padding.bottom),
-            left:   inputTextView.leftAnchor.constraint(equalTo: leftAnchor, constant: padding.left),
-            right:  inputTextView.rightAnchor.constraint(equalTo: rightAnchor, constant: -padding.right)
-        )
-
-        if #available(iOS 11.0, *) {
-            // Switch to safeAreaLayoutGuide
-            textViewLayoutSet?.bottom = inputTextView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding.bottom)
-            textViewLayoutSet?.left = inputTextView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: padding.left)
-            textViewLayoutSet?.right = inputTextView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -padding.right)
-        }
+        textViewLayoutSet = [
+            inputTextView.topAnchor.constraint(equalTo: topAnchor, constant: padding.top),
+            inputTextView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding.bottom),
+            inputTextView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: padding.left),
+            inputTextView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -padding.right)
+        ]
+        addConstraints(textViewLayoutSet)
         
         // Constraints Within the contentView
         maxTextViewHeight = calculateMaxTextViewHeight()
@@ -222,33 +213,18 @@ open class InputBarAccessoryView: UIView {
     ///
     /// - Parameter window: The window to anchor to
     private func setupConstraints(to window: UIWindow?) {
-        if #available(iOS 11.0, *) {
-            if let window = window {
-                guard window.safeAreaInsets.bottom > 0 else { return }
-                windowAnchor?.isActive = false
-                windowAnchor = inputTextView.bottomAnchor.constraint(lessThanOrEqualToSystemSpacingBelow: window.safeAreaLayoutGuide.bottomAnchor, multiplier: 1)
-                windowAnchor?.constant = -padding.bottom
-                windowAnchor?.priority = UILayoutPriority(rawValue: 750)
-                windowAnchor?.isActive = true
-            }
+        if let window = window {
+            guard window.safeAreaInsets.bottom > 0 else { return }
+            windowAnchor?.isActive = false
+            windowAnchor = inputTextView.bottomAnchor.constraint(lessThanOrEqualToSystemSpacingBelow: window.safeAreaLayoutGuide.bottomAnchor, multiplier: 1)
+            windowAnchor?.constant = -padding.bottom
+            windowAnchor?.priority = UILayoutPriority(rawValue: 750)
+            windowAnchor?.isActive = true
         }
     }
     
     // MARK: - Constraint Layout Updates
 
-    private func updateFrameInsets() {
-        updatePadding()
-    }
-    
-    /// Updates the constraint constants that correspond to the padding UIEdgeInsets
-    private func updatePadding() {
-        textViewLayoutSet?.top?.constant = padding.top
-        textViewLayoutSet?.left?.constant = padding.left
-        textViewLayoutSet?.right?.constant = -padding.right
-        textViewLayoutSet?.bottom?.constant = -padding.bottom
-        windowAnchor?.constant = -padding.bottom
-    }
-    
     /// Invalidates the view’s intrinsic content size
     open override func invalidateIntrinsicContentSize() {
         super.invalidateIntrinsicContentSize()
@@ -334,12 +310,12 @@ open class InputBarAccessoryView: UIView {
     
     /// Activates the NSLayoutConstraintSet's
     private func activateConstraints() {
-        textViewLayoutSet?.activate()
+        NSLayoutConstraint.activate(textViewLayoutSet)
     }
     
     /// Deactivates the NSLayoutConstraintSet's
     private func deactivateConstraints() {
-        textViewLayoutSet?.deactivate()
+        NSLayoutConstraint.deactivate(textViewLayoutSet)
     }
 
     // MARK: - Notifications/Hooks
