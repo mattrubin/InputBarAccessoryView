@@ -143,7 +143,7 @@ open class InputBarButtonItem: UIButton, InputItem {
     private var onKeyboardEditingBeginsAction: InputBarButtonItemAction?
     private var onKeyboardEditingEndsAction: InputBarButtonItemAction?
     private var onKeyboardSwipeGestureAction: ((InputBarButtonItem, UISwipeGestureRecognizer) -> Void)?
-    private var onTextViewDidChangeAction: ((InputBarButtonItem, InputTextView) -> Void)?
+    private var onTextViewDidChangeAction: ((InputBarButtonItem, UITextView) -> Void)?
     private var onSelectedAction: InputBarButtonItemAction?
     private var onDeselectedAction: InputBarButtonItemAction?
     private var onEnabledAction: InputBarButtonItemAction?
@@ -247,7 +247,7 @@ open class InputBarButtonItem: UIButton, InputItem {
     /// - Parameter action: The new onTextViewDidChangeAction
     /// - Returns: Self
     @discardableResult
-    open func onTextViewDidChange(_ action: @escaping (_ item: InputBarButtonItem, _ textView: InputTextView) -> Void) -> Self {
+    open func onTextViewDidChange(_ action: @escaping (_ item: InputBarButtonItem, _ textView: UITextView) -> Void) -> Self {
         onTextViewDidChangeAction = action
         return self
     }
@@ -307,7 +307,7 @@ open class InputBarButtonItem: UIButton, InputItem {
     /// Executes the onTextViewDidChangeAction with the given textView
     ///
     /// - Parameter textView: A reference to the InputTextView
-    open func textViewDidChangeAction(with textView: InputTextView) {
+    open func textViewDidChangeAction(with textView: UITextView) {
         onTextViewDidChangeAction?(self, textView)
     }
     

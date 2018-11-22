@@ -120,8 +120,15 @@ open class InputBarAccessoryView: UIView {
     public let bottomStackView = InputStackView(axis: .horizontal, spacing: 15)
     
     /// The InputTextView a user can input a message in
-    open lazy var inputTextView: InputTextView = { [weak self] in
-        let inputTextView = InputTextView()
+    open lazy var inputTextView: UITextView = { [weak self] in
+        let inputTextView = UITextView()
+        inputTextView.backgroundColor = .clear
+        inputTextView.font = UIFont.preferredFont(forTextStyle: .body)
+        inputTextView.isScrollEnabled = false
+        inputTextView.scrollIndicatorInsets = UIEdgeInsets(top: .leastNonzeroMagnitude,
+                                                           left: .leastNonzeroMagnitude,
+                                                           bottom: .leastNonzeroMagnitude,
+                                                           right: .leastNonzeroMagnitude)
         inputTextView.translatesAutoresizingMaskIntoConstraints = false
         return inputTextView
     }()

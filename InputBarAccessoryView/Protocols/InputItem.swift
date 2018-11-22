@@ -37,7 +37,7 @@ public protocol InputItem: AnyObject {
     var parentStackViewPosition: InputStackView.Position? { get set }
     
     /// A hook that is called when the InputTextView's text is changed
-    func textViewDidChangeAction(with textView: InputTextView)
+    func textViewDidChangeAction(with textView: UITextView)
     
     /// A hook that is called when the InputBarAccessoryView's InputTextView receieves a swipe gesture
     func keyboardSwipeGestureAction(with gesture: UISwipeGestureRecognizer)
