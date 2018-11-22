@@ -123,7 +123,6 @@ open class InputBarAccessoryView: UIView {
     open lazy var inputTextView: InputTextView = { [weak self] in
         let inputTextView = InputTextView()
         inputTextView.translatesAutoresizingMaskIntoConstraints = false
-        inputTextView.inputBarAccessoryView = self
         return inputTextView
     }()
     
