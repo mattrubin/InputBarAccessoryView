@@ -35,11 +35,6 @@ public class InputBarAccessoryView: UIView {
         textView.layer.borderWidth = 1 / UIScreen.main.scale
         textView.layer.borderColor = UIColor(named: "DividerColor")?.cgColor
         textView.textContainerInset = UIEdgeInsets(top: 6, left: 4, bottom: 4, right: 4)
-        textView.scrollIndicatorInsets = UIEdgeInsets(top: .leastNonzeroMagnitude,
-                                                      left: .leastNonzeroMagnitude,
-                                                      bottom: .leastNonzeroMagnitude,
-                                                      right: .leastNonzeroMagnitude)
-        textView.isScrollEnabled = false
     }
 
     let separator = UIView().configure {
@@ -113,6 +108,7 @@ public class InputBarAccessoryView: UIView {
 
         addSubview(textView)
         textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.isScrollEnabled = false
         addConstraints(textViewLayoutConstraints)
 
         // Constraints Within the contentView
