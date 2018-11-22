@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		38C8677F1F50A6AD00811974 /* InputBarAccessoryViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C867751F50A6AD00811974 /* InputBarAccessoryViewDelegate.swift */; };
 		38C867811F50A6AD00811974 /* InputBarAccessoryView-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = 38C867781F50A6AD00811974 /* InputBarAccessoryView-Bridging-Header.h */; };
 		38C867821F50A6AD00811974 /* InputBarAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C8677A1F50A6AD00811974 /* InputBarAccessoryView.swift */; };
 		38ECDBBD219B46D50076E154 /* InputBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38ECDBBC219B46D50076E154 /* InputBarViewController.swift */; };
@@ -15,7 +14,6 @@
 
 /* Begin PBXFileReference section */
 		383B83831F4787E200027965 /* InputBarAccessoryView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = InputBarAccessoryView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		38C867751F50A6AD00811974 /* InputBarAccessoryViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputBarAccessoryViewDelegate.swift; sourceTree = "<group>"; };
 		38C867771F50A6AD00811974 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		38C867781F50A6AD00811974 /* InputBarAccessoryView-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "InputBarAccessoryView-Bridging-Header.h"; sourceTree = "<group>"; };
 		38C8677A1F50A6AD00811974 /* InputBarAccessoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputBarAccessoryView.swift; sourceTree = "<group>"; };
@@ -53,19 +51,10 @@
 			isa = PBXGroup;
 			children = (
 				38C8677A1F50A6AD00811974 /* InputBarAccessoryView.swift */,
-				38C867741F50A6AD00811974 /* Protocols */,
 				38C867761F50A6AD00811974 /* Supporting Files */,
 				38ECDBBB219B46B90076E154 /* ViewControllers */,
 			);
 			path = InputBarAccessoryView;
-			sourceTree = "<group>";
-		};
-		38C867741F50A6AD00811974 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				38C867751F50A6AD00811974 /* InputBarAccessoryViewDelegate.swift */,
-			);
-			path = Protocols;
 			sourceTree = "<group>";
 		};
 		38C867761F50A6AD00811974 /* Supporting Files */ = {
@@ -167,7 +156,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				38ECDBBD219B46D50076E154 /* InputBarViewController.swift in Sources */,
-				38C8677F1F50A6AD00811974 /* InputBarAccessoryViewDelegate.swift in Sources */,
 				38C867821F50A6AD00811974 /* InputBarAccessoryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

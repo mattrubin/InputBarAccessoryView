@@ -28,8 +28,6 @@
 import UIKit
 
 public class InputBarAccessoryView: UIView {
-    weak var delegate: InputBarAccessoryViewDelegate?
-
     private(set) lazy var textView: UITextView = { [weak self] in
         let textView = UITextView()
         textView.backgroundColor = .clear
@@ -203,7 +201,5 @@ public class InputBarAccessoryView: UIView {
         if shouldInvalidateIntrinsicContentSize {
             invalidateIntrinsicContentSize()
         }
-
-        delegate?.inputBar(self, textViewTextDidChangeTo: trimmedText)
     }
 }
