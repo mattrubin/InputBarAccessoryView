@@ -34,15 +34,16 @@ public class InputBarAccessoryView: UIView {
         let textView = UITextView()
         textView.backgroundColor = .clear
         textView.font = UIFont.preferredFont(forTextStyle: .body)
-        textView.isScrollEnabled = false
         textView.scrollIndicatorInsets = UIEdgeInsets(top: .leastNonzeroMagnitude,
                                                       left: .leastNonzeroMagnitude,
                                                       bottom: .leastNonzeroMagnitude,
                                                       right: .leastNonzeroMagnitude)
         textView.layer.borderWidth = 1
-        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.isScrollEnabled = false
         return textView
     }()
+
+    // Cached Layout Metrics
 
     private let padding: UIEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
 
@@ -53,6 +54,8 @@ public class InputBarAccessoryView: UIView {
             textViewHeightConstraint.constant = maxTextViewHeight
         }
     }
+
+    // Layout Constraints
 
     private lazy var textViewLayoutConstraints = [
         textView.topAnchor.constraint(equalTo: topAnchor, constant: padding.top),
@@ -110,9 +113,7 @@ public class InputBarAccessoryView: UIView {
     
     /// Sets up the initial constraints of each subview
     private func setupConstraints() {
-        
-        // The constraints within the InputBarAccessoryView
-        translatesAutoresizingMaskIntoConstraints = false
+        textView.translatesAutoresizingMaskIntoConstraints = false
         addConstraints(textViewLayoutConstraints)
         
         // Constraints Within the contentView
