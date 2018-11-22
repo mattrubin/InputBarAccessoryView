@@ -27,21 +27,18 @@
 
 import UIKit
 
-/// A powerful InputAccessoryView ideal for messaging applications
 open class InputBarAccessoryView: UIView {
-    /// A delegate to broadcast notifications from the `InputBarAccessoryView`
     weak var delegate: InputBarAccessoryViewDelegate?
 
-    /// The InputTextView a user can input a message in
     private(set) lazy var textView: UITextView = { [weak self] in
         let textView = UITextView()
         textView.backgroundColor = .clear
         textView.font = UIFont.preferredFont(forTextStyle: .body)
         textView.isScrollEnabled = false
         textView.scrollIndicatorInsets = UIEdgeInsets(top: .leastNonzeroMagnitude,
-                                                           left: .leastNonzeroMagnitude,
-                                                           bottom: .leastNonzeroMagnitude,
-                                                           right: .leastNonzeroMagnitude)
+                                                      left: .leastNonzeroMagnitude,
+                                                      bottom: .leastNonzeroMagnitude,
+                                                      right: .leastNonzeroMagnitude)
         textView.layer.borderWidth = 1
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
@@ -135,7 +132,7 @@ open class InputBarAccessoryView: UIView {
         // textViewHeightConstraint.constant = maxTextViewHeight
     }
 
-    // MARK: - Constraint Layout Updates
+    // MARK: - Override
 
     open override func willMove(toSuperview newSuperview: UIView?) {
         super.willMove(toSuperview: newSuperview)
@@ -147,26 +144,27 @@ open class InputBarAccessoryView: UIView {
         }
     }
 
-    /// Returns the most recent size calculated by `calculateIntrinsicContentSize()`
+    open override func layoutIfNeeded() {
+        super.layoutIfNeeded()
+        textView.layoutIfNeeded()
+    }
+
     open override var intrinsicContentSize: CGSize {
         return cachedIntrinsicContentSize
     }
 
-    /// Invalidates the view’s intrinsic content size
     open override func invalidateIntrinsicContentSize() {
         super.invalidateIntrinsicContentSize()
         cachedIntrinsicContentSize = calculateIntrinsicContentSize()
     }
 
-    /// The height that will fit the current text in the InputTextView based on its current bounds
+    // MARK: - Size Calculation
+
     private func preferredTextViewHeight() -> CGFloat {
         let maxTextViewSize = CGSize(width: textView.bounds.width, height: .greatestFiniteMagnitude)
         return textView.sizeThatFits(maxTextViewSize).height.rounded(.down)
     }
 
-    /// Calculates the correct intrinsicContentSize of the InputBarAccessoryView
-    ///
-    /// - Returns: The required intrinsicContentSize
     private func calculateIntrinsicContentSize() -> CGSize {
         var inputTextViewHeight = preferredTextViewHeight()
         if inputTextViewHeight >= maxTextViewHeight {
@@ -190,14 +188,6 @@ open class InputBarAccessoryView: UIView {
         return CGSize(width: UIView.noIntrinsicMetric, height: requiredHeight)
     }
 
-    open override func layoutIfNeeded() {
-        super.layoutIfNeeded()
-        textView.layoutIfNeeded()
-    }
-
-    /// Returns the max height the InputTextView can grow to based on the UIScreen
-    ///
-    /// - Returns: Max Height
     private func calculateMaxTextViewHeight() -> CGFloat {
         if traitCollection.verticalSizeClass == .regular {
             return (UIScreen.main.bounds.height / 3).rounded(.down)
@@ -207,7 +197,6 @@ open class InputBarAccessoryView: UIView {
     
     // MARK: - Notifications/Hooks
     
-    /// Invalidates the intrinsicContentSize
     override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass
@@ -220,7 +209,6 @@ open class InputBarAccessoryView: UIView {
         }
     }
     
-    /// Invalidates the intrinsicContentSize
     @objc
     private func orientationDidChange() {
         if shouldAutoUpdateMaxTextViewHeight {
@@ -229,9 +217,6 @@ open class InputBarAccessoryView: UIView {
         invalidateIntrinsicContentSize()
     }
 
-    /// Enables/Disables the sendButton based on the InputTextView's text being empty
-    /// Invalidates the intrinsicContentSize
-    /// Calls the delegates `textViewTextDidChangeTo` method
     @objc
     private func textDidChange() {
         let trimmedText = textView.text.trimmingCharacters(in: .whitespacesAndNewlines)
