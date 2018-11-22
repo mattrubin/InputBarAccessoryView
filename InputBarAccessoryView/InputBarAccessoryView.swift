@@ -27,7 +27,7 @@
 
 import UIKit
 
-open class InputBarAccessoryView: UIView {
+public class InputBarAccessoryView: UIView {
     weak var delegate: InputBarAccessoryViewDelegate?
 
     private(set) lazy var textView: UITextView = { [weak self] in
@@ -51,16 +51,9 @@ open class InputBarAccessoryView: UIView {
     
     /// A boolean that indicates if the maxTextViewHeight has been met. Keeping track of this
     /// improves the performance
-    public private(set) var isOverMaxTextViewHeight = false
-    
-    /// A boolean that determines if the `maxTextViewHeight` should be maintained automatically.
-    /// To control the maximum height of the view yourself, set this to `false`.
-    open var shouldAutoUpdateMaxTextViewHeight = true
+    private(set) var isOverMaxTextViewHeight = false
 
-    /// The maximum height that the InputTextView can reach.
-    /// This is set automatically when `shouldAutoUpdateMaxTextViewHeight` is true.
-    /// To control the height yourself, make sure to set `shouldAutoUpdateMaxTextViewHeight` to false.
-    open var maxTextViewHeight: CGFloat = 0 {
+    private var maxTextViewHeight: CGFloat = 0 {
         didSet {
             textViewHeightConstraint.constant = maxTextViewHeight
         }
@@ -76,16 +69,16 @@ open class InputBarAccessoryView: UIView {
 
     // MARK: - Initialization
     
-    public convenience init() {
+    convenience init() {
         self.init(frame: .zero)
     }
     
-    public override init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
     }
     
-    required public init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
@@ -97,7 +90,7 @@ open class InputBarAccessoryView: UIView {
     // MARK: - Setup
     
     /// Sets up the default properties
-    open func setup() {
+    private func setup() {
         backgroundColor = .white
         autoresizingMask = [.flexibleHeight]
         setupSubviews()
@@ -134,7 +127,7 @@ open class InputBarAccessoryView: UIView {
 
     // MARK: - Override
 
-    open override func willMove(toSuperview newSuperview: UIView?) {
+    override public func willMove(toSuperview newSuperview: UIView?) {
         super.willMove(toSuperview: newSuperview)
 
         if newSuperview == nil {
@@ -144,16 +137,16 @@ open class InputBarAccessoryView: UIView {
         }
     }
 
-    open override func layoutIfNeeded() {
+    override public func layoutIfNeeded() {
         super.layoutIfNeeded()
         textView.layoutIfNeeded()
     }
 
-    open override var intrinsicContentSize: CGSize {
+    override public var intrinsicContentSize: CGSize {
         return cachedIntrinsicContentSize
     }
 
-    open override func invalidateIntrinsicContentSize() {
+    override public func invalidateIntrinsicContentSize() {
         super.invalidateIntrinsicContentSize()
         cachedIntrinsicContentSize = calculateIntrinsicContentSize()
     }
@@ -197,23 +190,17 @@ open class InputBarAccessoryView: UIView {
     
     // MARK: - Notifications/Hooks
     
-    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass
             || traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass {
-            if shouldAutoUpdateMaxTextViewHeight {
-                maxTextViewHeight = calculateMaxTextViewHeight()
-            } else {
-                invalidateIntrinsicContentSize()
-            }
+            maxTextViewHeight = calculateMaxTextViewHeight()
         }
     }
     
     @objc
     private func orientationDidChange() {
-        if shouldAutoUpdateMaxTextViewHeight {
-            maxTextViewHeight = calculateMaxTextViewHeight()
-        }
+        maxTextViewHeight = calculateMaxTextViewHeight()
         invalidateIntrinsicContentSize()
     }
 

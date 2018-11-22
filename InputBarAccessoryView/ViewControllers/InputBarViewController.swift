@@ -32,7 +32,7 @@ import UIKit
 open class InputBarViewController: UIViewController, InputBarAccessoryViewDelegate {
 
     /// A powerful InputAccessoryView ideal for messaging applications
-    public let inputBar = InputBarAccessoryView()
+    let inputBar = InputBarAccessoryView()
 
     /// A boolean value that when changed will update the `inputAccessoryView`
     /// of the `InputBarViewController`. When set to `TRUE`, the
@@ -77,12 +77,8 @@ open class InputBarViewController: UIViewController, InputBarAccessoryViewDelega
 
     // MARK: - InputBarAccessoryViewDelegate
 
-    open func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) { }
+    func inputBar(_ inputBar: InputBarAccessoryView, textViewTextDidChangeTo text: String) {}
 
-    open func inputBar(_ inputBar: InputBarAccessoryView, textViewTextDidChangeTo text: String) { }
-
-    open func inputBar(_ inputBar: InputBarAccessoryView, didChangeIntrinsicContentTo size: CGSize) { }
-
-    open func inputBar(_ inputBar: InputBarAccessoryView, didSwipeTextViewWith gesture: UISwipeGestureRecognizer) { }
+    func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {}
 }
 
