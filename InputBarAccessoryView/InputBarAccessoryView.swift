@@ -65,7 +65,7 @@ public class InputBarAccessoryView: UIView {
         textView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: padding.left),
         textView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -padding.right)
     ]
-    private lazy var textViewHeightConstraint = textView.heightAnchor.constraint(equalToConstant: maxTextViewHeight)
+    private lazy var textViewHeightConstraint = textView.heightAnchor.constraint(lessThanOrEqualToConstant: maxTextViewHeight)
 
     // MARK: - Initialization
     
@@ -122,7 +122,7 @@ public class InputBarAccessoryView: UIView {
         
         // Constraints Within the contentView
         maxTextViewHeight = calculateMaxTextViewHeight()
-        // textViewHeightConstraint.constant = maxTextViewHeight
+        addConstraint(textViewHeightConstraint)
     }
 
     // MARK: - Override
@@ -162,14 +162,12 @@ public class InputBarAccessoryView: UIView {
         var inputTextViewHeight = preferredTextViewHeight()
         if inputTextViewHeight >= maxTextViewHeight {
             if !isOverMaxTextViewHeight {
-                textViewHeightConstraint.isActive = true
                 textView.isScrollEnabled = true
                 isOverMaxTextViewHeight = true
             }
             inputTextViewHeight = maxTextViewHeight
         } else {
             if isOverMaxTextViewHeight {
-                textViewHeightConstraint.isActive = false
                 textView.isScrollEnabled = false
                 isOverMaxTextViewHeight = false
                 textView.invalidateIntrinsicContentSize()
