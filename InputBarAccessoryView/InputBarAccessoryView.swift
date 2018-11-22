@@ -56,20 +56,6 @@ open class InputBarAccessoryView: UIView {
         inputTextView.translatesAutoresizingMaskIntoConstraints = false
         return inputTextView
     }()
-    
-    /// A InputBarButtonItem used as the send button and initially placed in the rightStackView
-    open var sendButton: InputBarSendButton = {
-        return InputBarSendButton()
-            .configure {
-                $0.setSize(CGSize(width: 52, height: 36), animated: false)
-                $0.isEnabled = false
-                $0.title = "Send"
-                $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
-                $0.translatesAutoresizingMaskIntoConstraints = false
-            }.onTouchUpInside {
-                $0.inputBarAccessoryView?.didSelectSendButton()
-        }
-    }()
 
     /**
      The anchor contants used to add horizontal inset from the InputBarAccessoryView and the
@@ -175,7 +161,6 @@ open class InputBarAccessoryView: UIView {
     
     private var textViewLayoutSet: NSLayoutConstraintSet?
     private var textViewHeightAnchor: NSLayoutConstraint?
-    private var sendButtonLayoutSet: NSLayoutConstraintSet?
     private var contentViewLayoutSet: NSLayoutConstraintSet?
     private var windowAnchor: NSLayoutConstraint?
 
@@ -258,7 +243,6 @@ open class InputBarAccessoryView: UIView {
         
         addSubview(contentView)
         contentView.addSubview(inputTextView)
-        contentView.addSubview(sendButton)
     }
     
     /// Sets up the initial constraints of each subview
@@ -286,16 +270,10 @@ open class InputBarAccessoryView: UIView {
             top:    inputTextView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: textViewPadding.top),
             bottom: inputTextView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -textViewPadding.bottom),
             left:   inputTextView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: textViewPadding.left),
-            right:  inputTextView.rightAnchor.constraint(equalTo: sendButton.leftAnchor, constant: -textViewPadding.right)
+            right:  inputTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -textViewPadding.right)
         )
         maxTextViewHeight = calculateMaxTextViewHeight()
         textViewHeightAnchor = inputTextView.heightAnchor.constraint(equalToConstant: maxTextViewHeight)
-
-        sendButtonLayoutSet = NSLayoutConstraintSet(
-            top:    sendButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
-            bottom: sendButton.bottomAnchor.constraint(equalTo: inputTextView.bottomAnchor, constant: 0),
-            right:  sendButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: 0)
-        )
     }
     
     /// Respect window safeAreaInsets
@@ -425,14 +403,12 @@ open class InputBarAccessoryView: UIView {
     private func activateConstraints() {
         contentViewLayoutSet?.activate()
         textViewLayoutSet?.activate()
-        sendButtonLayoutSet?.activate()
     }
     
     /// Deactivates the NSLayoutConstraintSet's
     private func deactivateConstraints() {
-         contentViewLayoutSet?.deactivate()
+        contentViewLayoutSet?.deactivate()
         textViewLayoutSet?.deactivate()
-        sendButtonLayoutSet?.deactivate()
     }
 
     /// Sets the `shouldForceTextViewMaxHeight` property
@@ -482,7 +458,7 @@ open class InputBarAccessoryView: UIView {
         let trimmedText = inputTextView.text.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if shouldManageSendButtonEnabledState {
-            sendButton.isEnabled = !trimmedText.isEmpty
+            //sendButton.isEnabled = !trimmedText.isEmpty
         }
         
         // Capture change before iterating over the InputItem's
