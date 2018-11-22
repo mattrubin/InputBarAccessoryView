@@ -194,7 +194,6 @@ open class InputBarButtonItem: UIButton, InputItem {
         size = newValue
         if animated, let position = parentStackViewPosition {
             inputBarAccessoryView?.performLayout(animated) { [weak self] in
-                self?.inputBarAccessoryView?.layoutStackViews([position])
             }
         }
     }
