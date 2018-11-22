@@ -123,13 +123,14 @@ open class InputBarAccessoryView: UIView {
 
     open override func willMove(toSuperview newSuperview: UIView?) {
         super.willMove(toSuperview: newSuperview)
-        guard newSuperview != nil else {
-            deactivateConstraints()
-            return
+
+        if newSuperview == nil {
+            NSLayoutConstraint.deactivate(textViewLayoutSet)
+        } else {
+            NSLayoutConstraint.activate(textViewLayoutSet)
         }
-        activateConstraints()
     }
-    
+
     // MARK: - Setup
     
     /// Sets up the default properties
@@ -227,36 +228,6 @@ open class InputBarAccessoryView: UIView {
         return (UIScreen.main.bounds.height / 5).rounded(.down)
     }
     
-    // MARK: - Layout Helper Methods
-    
-
-    /// Performs a layout over the main thread
-    ///
-    /// - Parameters:
-    ///   - animated: If the layout should be animated
-    ///   - animations: Animation logic
-    internal func performLayout(_ animated: Bool, _ animations: @escaping () -> Void) {
-        deactivateConstraints()
-        if animated {
-            DispatchQueue.main.async {
-                UIView.animate(withDuration: 0.3, animations: animations)
-            }
-        } else {
-            UIView.performWithoutAnimation { animations() }
-        }
-        activateConstraints()
-    }
-    
-    /// Activates the NSLayoutConstraintSet's
-    private func activateConstraints() {
-        NSLayoutConstraint.activate(textViewLayoutSet)
-    }
-    
-    /// Deactivates the NSLayoutConstraintSet's
-    private func deactivateConstraints() {
-        NSLayoutConstraint.deactivate(textViewLayoutSet)
-    }
-
     // MARK: - Notifications/Hooks
     
     /// Invalidates the intrinsicContentSize
