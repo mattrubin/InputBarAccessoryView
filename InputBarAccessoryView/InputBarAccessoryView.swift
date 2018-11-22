@@ -130,11 +130,6 @@ open class InputBarAccessoryView: UIView {
     /// improves the performance
     public private(set) var isOverMaxTextViewHeight = false
     
-    /// A boolean that when set as `TRUE` will always enable the `InputTextView` to be anchored to the
-    /// height of `maxTextViewHeight`
-    /// The default value is `FALSE`
-    public private(set) var shouldForceTextViewMaxHeight = false
-    
     /// A boolean that determines if the `maxTextViewHeight` should be maintained automatically.
     /// To control the maximum height of the view yourself, set this to `false`.
     open var shouldAutoUpdateMaxTextViewHeight = true
@@ -341,7 +336,7 @@ open class InputBarAccessoryView: UIView {
             inputTextViewHeight = maxTextViewHeight
         } else {
             if isOverMaxTextViewHeight {
-                textViewHeightAnchor?.isActive = false || shouldForceTextViewMaxHeight
+                textViewHeightAnchor?.isActive = false
                 inputTextView.isScrollEnabled = false
                 isOverMaxTextViewHeight = false
                 inputTextView.invalidateIntrinsicContentSize()
@@ -411,20 +406,6 @@ open class InputBarAccessoryView: UIView {
         textViewLayoutSet?.deactivate()
     }
 
-    /// Sets the `shouldForceTextViewMaxHeight` property
-    ///
-    /// - Parameters:
-    ///   - newValue: New boolean value
-    ///   - animated: If the layout should be animated
-    open func setShouldForceMaxTextViewHeight(to newValue: Bool, animated: Bool) {
-        performLayout(animated) {
-            self.shouldForceTextViewMaxHeight = newValue
-            self.textViewHeightAnchor?.isActive = newValue
-            guard self.superview?.superview != nil else { return }
-            self.superview?.superview?.layoutIfNeeded()
-        }
-    }
-    
     // MARK: - Notifications/Hooks
     
     /// Invalidates the intrinsicContentSize
